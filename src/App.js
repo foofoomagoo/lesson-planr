@@ -45,7 +45,7 @@ export class App extends Component {
   };
 
   createTask = () => {
-    if (this.state.addedTasks.length <= 10) {
+    if (this.state.addedTasks.length < 10) {
       const joined = this.state.addedTasks.concat({
         id: this.state.addedTasks.length + 1,
         rotation: "",
