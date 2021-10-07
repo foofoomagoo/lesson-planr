@@ -2,37 +2,146 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.planr-container {
+  width: 75%;
+  background: white;
+  margin: 100px auto 20px auto;
+  border-radius: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.details-container {
+  width: 100%;
+  padding: 20px 0 0 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.detail-box {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto 10px auto;
+  padding: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+.detail-input {
+  width: 48%;
+  border-bottom: 1px solid black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.goals-container {
+  width: 90%;
+  margin: auto;
+}
+
+.tasks-container {
+  width: 100%;
+  margin: auto;
+}
+
+.task {
+  width: 90%;
+  margin: auto;
+}
+
+.task-header {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.task-input {
+  margin-right: 20px;
+  padding: 0 0 3px 0;
+  border-bottom: 1px solid black;
+}
+
+.task-goals {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.close-icon {
+  float: left;
+  position: relative;
+  left: -25px;
+  top: 20px;
+  opacity: 0.5;
+}
+
+.close-icon:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.task {
+  margin: 50px auto 0 auto;
+}
+
+.task-content {
+  width: 100%;
+}
+
+.task-plan {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-list {
+  width: 45%;
+}
+
+.task-equipment {
+  width: 45%;
+}
+
+.task-btn {
+  display: inline-block;
+  opacity: 0.5;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.task-btn i {
+  margin: 0 !important;
+}
+
+.task-btn:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.task:hover > .close-btn {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.close-btn {
+  float: right;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+@media print {
+  .planr-container,
+  .planr-container * {
+    visibility: visible;
   }
-  to {
-    transform: rotate(360deg);
+
+  .planr-container {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .planr-btns {
+    display: none;
+  }
+
+  #add-task-btn {
+    display: none;
   }
 }
