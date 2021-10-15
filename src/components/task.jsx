@@ -45,19 +45,42 @@ export class Task extends Component {
     }
   };
 
+  moveTaskUp = (e) => {
+    this.props.moveTask(this.props.taskId, "up");
+  };
+
+  moveTaskDown = (e) => {
+    this.props.moveTask(this.props.taskId, "down");
+  };
+
+  handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.target.rows = e.target.rows + 1;
+    }
+  };
+
   render() {
     const goals = this.state.showGoals;
     return (
       <div className="task">
         <div className="close-btn">
+          {this.props.taskLength != this.props.taskId && (
+            <Icon color="grey" name="down arrow" onClick={this.moveTaskDown} />
+          )}
+
+          {this.props.taskId > 1 && (
+            <Icon color="grey" name="up arrow" onClick={this.moveTaskUp} />
+          )}
+
           {this.props.taskId !== 0 && (
-            <Icon onClick={this.delete} name="close" />
+            <Icon onClick={this.delete} color="grey" name="close" />
           )}
         </div>
         <div className="task-header">
           <div className="task-input">
             <Input
               id="rotation"
+              disabled={!this.props.init && "disabled"}
               transparent
               placeholder="Rotation"
               onChange={this.handleInputChange}
@@ -67,6 +90,7 @@ export class Task extends Component {
           <div className="task-input">
             <Input
               id="duration"
+              disabled={!this.props.init && "disabled"}
               transparent
               placeholder="Event duration"
               onChange={this.handleInputChange}
@@ -86,11 +110,13 @@ export class Task extends Component {
             {goals ? (
               <Form>
                 <TextArea
-                  id="goals"
-                  rows="2"
                   placeholder="Goals and objectives"
+                  disabled={!this.props.init && "disabled"}
+                  rows="1"
+                  id="goals"
                   onChange={this.handleInputChange}
                   value={this.props.taskInfo.goals}
+                  onKeyDown={this.handleKeyDown}
                 />
               </Form>
             ) : (
@@ -102,10 +128,12 @@ export class Task extends Component {
               <Form>
                 <TextArea
                   id="tasks"
-                  rows="2"
+                  rows="1"
+                  disabled={!this.props.init && "disabled"}
                   placeholder="Tasks"
                   onChange={this.handleInputChange}
                   value={this.props.taskInfo.tasks}
+                  onKeyDown={this.handleKeyDown}
                 />
               </Form>
             </div>
@@ -113,10 +141,12 @@ export class Task extends Component {
               <Form>
                 <TextArea
                   id="equipment"
-                  rows="2"
-                  placeholder="Equipement needed"
+                  placeholder="Equipment"
+                  disabled={!this.props.init && "disabled"}
+                  rows="1"
                   onChange={this.handleInputChange}
                   value={this.props.taskInfo.equipment}
+                  onKeyDown={this.handleKeyDown}
                 />
               </Form>
             </div>

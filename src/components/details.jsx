@@ -72,6 +72,7 @@ export class Details extends Component {
               value={this.state.duration}
             />
           </div>
+          <button>Get Date</button>
         </div>
       </div>
     );

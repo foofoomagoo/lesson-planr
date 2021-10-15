@@ -1,8 +1,8 @@
 import "./App.css";
 import React, { Component } from "react";
-import { Input, Button, Popup } from "semantic-ui-react";
-import * as htmlToImage from "html-to-image";
+import { Input, Button, Popup, Icon } from "semantic-ui-react";
 import downloadjs from "downloadjs";
+import SemanticDatepicker from "react-semantic-ui-datepickers";
 
 import Task from "./components/task";
 
@@ -10,6 +10,7 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      init: 0,
       details: {
         instructor: "",
         class: "",
@@ -27,18 +28,21 @@ export class App extends Component {
     };
   }
 
+  initialize = (e) => {
+    this.setState({ init: 1 });
+  };
+
   updateInput = (id, r, e) => {
     this.setState((prevState) => ({
       addedTasks: prevState.addedTasks.map((el) =>
         el.id === id ? { ...el, [r]: e } : el
       ),
     }));
-    console.log(this.state.addedTasks);
   };
 
   handleChange = (e) => {
     const thisId = e.target.id;
-    // this.setState({ [thisId]: e.target.value });
+
     this.setState((prevState) => ({
       details: { ...prevState.details, [thisId]: e.target.value },
     }));
@@ -60,7 +64,8 @@ export class App extends Component {
 
   renderTasks = () => {
     var taskArray = [];
-    const tasks = this.state.addedTasks;
+
+    let tasks = this.state.addedTasks;
 
     for (var i = 0; i < tasks.length; i++) {
       taskArray.push(
@@ -70,6 +75,9 @@ export class App extends Component {
           taskInfo={this.state.addedTasks[i]}
           updateInfo={this.updateInput}
           onDelete={this.deleteTask}
+          moveTask={this.moveTask}
+          taskLength={this.state.addedTasks.length}
+          init={this.state.init}
         />
       );
     }
@@ -78,7 +86,7 @@ export class App extends Component {
   };
 
   reset = () => {
-    this.setState((prevState) => ({
+    this.setState(() => ({
       details: { instructor: "", class: "", duration: "", date: "" },
       firstTask: {
         rotation: "",
@@ -103,17 +111,64 @@ export class App extends Component {
     this.setState({ addedTasks: array });
   };
 
-  saveImage = () => {
-    htmlToImage
-      .toPng(document.getElementById("planr-container"))
-      .then(function (dataUrl) {
-        downloadjs(dataUrl, "my-node.png");
-      });
+  moveTask = (e, d) => {
+    let direction = d;
+
+    let taskArray = this.state.addedTasks;
+    console.log(taskArray.length);
+
+    let thisId = e - 1;
+
+    let prevId = thisId - 1;
+    let nextId = thisId + 1;
+    let temp = this.state.addedTasks[thisId];
+
+    if (direction === "up" && prevId !== -1) {
+      taskArray[thisId] = taskArray[prevId];
+      taskArray[prevId] = temp;
+    } else if (direction === "down" && nextId !== taskArray.length) {
+      taskArray[thisId] = taskArray[nextId];
+      taskArray[nextId] = temp;
+    }
+
+    this.setState({ addedTasks: taskArray });
   };
+
   render() {
     return (
       <div className="App">
-        <div id="planr-content" className="planr-container">
+        <div className="version">
+          <small>Version 1.0.0</small>
+        </div>
+        <div
+          className={
+            !this.state.init
+              ? "splash-container"
+              : "splash-container splash-visible"
+          }
+        >
+          <div className="splash">
+            <h1>Lesson Planr</h1>
+            <br />
+            <Button
+              id="get-started-btn"
+              disabled={this.props.init && "disabled"}
+              inverted
+              onClick={this.initialize}
+            >
+              Start Your Plan
+            </Button>
+          </div>
+        </div>
+        <div className="planr-clear"></div>
+        <div
+          id="planr-content"
+          className={
+            !this.state.init
+              ? "planr-container"
+              : "planr-container planr-visible"
+          }
+        >
           {/* DETAILS */}
           <div className="details-container">
             <h3>Class Details</h3>
@@ -121,6 +176,7 @@ export class App extends Component {
               <div className="detail-input">
                 <Input
                   id="instructor"
+                  disabled={!this.state.init && "disabled"}
                   onChange={this.handleChange}
                   transparent
                   fluid
@@ -131,6 +187,7 @@ export class App extends Component {
               <div className="detail-input">
                 <Input
                   id="class"
+                  disabled={!this.state.init && "disabled"}
                   onChange={this.handleChange}
                   transparent
                   fluid
@@ -147,20 +204,26 @@ export class App extends Component {
                 className="detail-input"
                 style={{ width: "auto", marginRight: "20px" }}
               >
-                <Input
+                <SemanticDatepicker
+                  onChange={(event, data) =>
+                    this.setState((prevState) => ({
+                      details: { ...prevState.details, date: data.value },
+                    }))
+                  }
                   id="date"
-                  onChange={this.handleChange}
+                  disabled={!this.state.init && "disabled"}
                   transparent
-                  placeholder="DD/MM/YYYY"
+                  placeholder="Date"
                   value={this.state.details.date}
                 />
               </div>
               <div className="detail-input" style={{ width: "auto" }}>
                 <Input
                   id="duration"
+                  disabled={!this.state.init && "disabled"}
                   onChange={this.handleChange}
                   transparent
-                  placeholder="Duration"
+                  placeholder="Class Length"
                   value={this.state.details.duration}
                 />
               </div>
@@ -168,22 +231,29 @@ export class App extends Component {
           </div>
           {/* TASKS */}
           <div className="task-container">
-            <h3>Tasks</h3>
+            <h3>Rotations</h3>
             <Task
               taskId={0}
               taskInfo={this.state.firstTask}
               updateInfo={this.updateTask}
+              taskLength={0}
+              init={this.state.init}
             />
             {this.renderTasks()}
+
             <Popup
               content="Add new rotation"
+              disabled
               trigger={
                 <Button
-                  id="add-task-btn"
+                  icon
+                  disabled={!this.state.init && "disabled"}
+                  circular
                   onClick={this.createTask}
-                  icon="plus"
-                  color="grey"
-                ></Button>
+                  id="add-task-btn"
+                >
+                  <Icon name="plus" />
+                </Button>
               }
             />
           </div>
@@ -193,17 +263,12 @@ export class App extends Component {
               icon="print"
               color="green"
               content="Print"
+              disabled={!this.state.init && "disabled"}
             />
-            <Button
-              id="save-img"
-              onClick={this.saveImage}
-              icon="save"
-              color="blue"
-              content="Save"
-              download
-            />
+
             <Button
               onClick={this.reset}
+              disabled={!this.state.init ? "disabled" : ""}
               icon="undo alternate"
               color="red"
               content="Reset"
