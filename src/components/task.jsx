@@ -32,17 +32,9 @@ export class Task extends Component {
   };
 
   handleInputChange = (e) => {
-    if (this.props.taskId === 0) {
-      const thisId = e.target.id;
-      this.setState({ [thisId]: e.target.value });
-      this.props.updateInfo(thisId, e.target.value);
-    }
-
-    if (this.props.taskId !== 0) {
-      const thisValue = "this" + e.target.id;
-      this.setState({ [thisValue]: e.target.value });
-      this.props.updateInfo(this.props.taskId, e.target.id, e.target.value);
-    }
+    const thisValue = "this" + e.target.id;
+    this.setState({ [thisValue]: e.target.value });
+    this.props.updateInfo(this.props.taskId, e.target.id, e.target.value);
   };
 
   moveTaskUp = (e) => {
@@ -64,15 +56,15 @@ export class Task extends Component {
     return (
       <div className="task">
         <div className="close-btn">
-          {this.props.taskLength != this.props.taskId && (
+          {this.props.taskLength != this.props.taskPosition + 1 && (
             <Icon color="grey" name="down arrow" onClick={this.moveTaskDown} />
           )}
 
-          {this.props.taskId > 1 && (
+          {this.props.taskPosition > 0 && (
             <Icon color="grey" name="up arrow" onClick={this.moveTaskUp} />
           )}
 
-          {this.props.taskId !== 0 && (
+          {this.props.taskLength > 1 && (
             <Icon onClick={this.delete} color="grey" name="close" />
           )}
         </div>

@@ -8,6 +8,10 @@
 
 # testing
 /coverage
+index.html
+/src/components/task-backup.jsx
+App-backup.js
+style.css
 
 # production
 /build

@@ -1,7 +1,6 @@
 import "./App.css";
 import React, { Component } from "react";
 import { Input, Button, Popup, Icon } from "semantic-ui-react";
-import downloadjs from "downloadjs";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 
 import Task from "./components/task";
@@ -17,6 +16,32 @@ export class App extends Component {
         date: "",
         duration: "",
       },
+      tasks: [
+        {
+          id: 0,
+          goals: "",
+          rotation: "Bars",
+          duration: "",
+          tasks: "",
+          equipment: "",
+        },
+        {
+          id: 1,
+          goals: "",
+          rotation: "Beam",
+          duration: "",
+          tasks: "",
+          equipment: "",
+        },
+        {
+          id: 2,
+          goals: "",
+          rotation: "Floor",
+          duration: "",
+          tasks: "",
+          equipment: "",
+        },
+      ],
       firstTask: {
         id: 0,
         rotation: "",
@@ -28,18 +53,22 @@ export class App extends Component {
     };
   }
 
+  // Fires when the 'Get Started' button is clicked.
+  // Fades the lesson plan
   initialize = (e) => {
     this.setState({ init: 1 });
   };
 
+  // Updates the state of the added tasks
   updateInput = (id, r, e) => {
     this.setState((prevState) => ({
-      addedTasks: prevState.addedTasks.map((el) =>
+      tasks: prevState.tasks.map((el) =>
         el.id === id ? { ...el, [r]: e } : el
       ),
     }));
   };
 
+  // Updates the details information
   handleChange = (e) => {
     const thisId = e.target.id;
 
@@ -48,35 +77,40 @@ export class App extends Component {
     }));
   };
 
+  // Fires when the user creates a new task
+  // Adds a blank task to the 'addedTasks' state
   createTask = () => {
-    if (this.state.addedTasks.length < 10) {
-      const joined = this.state.addedTasks.concat({
-        id: this.state.addedTasks.length + 1,
+    if (this.state.tasks.length < 10) {
+      const joined = this.state.tasks.concat({
+        id: this.state.tasks.length,
         rotation: "",
         duration: "",
         goals: "",
         tasks: "",
         equipment: "",
       });
-      this.setState({ addedTasks: joined });
+      this.setState({ tasks: joined });
     }
   };
 
+  // Renders out all the added tasks from the state
   renderTasks = () => {
     var taskArray = [];
 
-    let tasks = this.state.addedTasks;
+    let tasks = this.state.tasks;
 
     for (var i = 0; i < tasks.length; i++) {
+      let getIndex = tasks.indexOf(tasks[i]);
       taskArray.push(
         <Task
           key={i}
-          taskId={i + 1}
-          taskInfo={this.state.addedTasks[i]}
+          taskId={i}
+          taskPosition={getIndex}
+          taskInfo={this.state.tasks[i]}
           updateInfo={this.updateInput}
           onDelete={this.deleteTask}
           moveTask={this.moveTask}
-          taskLength={this.state.addedTasks.length}
+          taskLength={this.state.tasks.length}
           init={this.state.init}
         />
       );
@@ -85,43 +119,41 @@ export class App extends Component {
     return taskArray;
   };
 
+  // Resets the whole app
   reset = () => {
     this.setState(() => ({
       details: { instructor: "", class: "", duration: "", date: "" },
-      firstTask: {
-        rotation: "",
-        duration: "",
-        tasks: "",
-        equipment: "",
-        goals: "",
-      },
     }));
-    this.setState({ addedTasks: [] });
+    this.setState({
+      tasks: [{ id: 0, goals: "", rotation: "", tasks: "", equipment: "" }],
+    });
   };
 
+  // Updates the first task
   updateTask = (id, e) => {
     this.setState((prevState) => ({
       firstTask: { ...prevState.firstTask, [id]: e },
     }));
   };
 
+  // Deletes selected task
   deleteTask = (e) => {
-    const array = [...this.state.addedTasks];
-    array.splice(e - 1, 1);
-    this.setState({ addedTasks: array });
+    const array = [...this.state.tasks];
+    array.splice(e, 1);
+    this.setState({ tasks: array });
   };
 
+  // Moves selected task either up or down the list
   moveTask = (e, d) => {
     let direction = d;
 
-    let taskArray = this.state.addedTasks;
-    console.log(taskArray.length);
+    let taskArray = this.state.tasks; // Creates an array of the addedTasks state
 
-    let thisId = e - 1;
+    let thisId = e;
 
     let prevId = thisId - 1;
     let nextId = thisId + 1;
-    let temp = this.state.addedTasks[thisId];
+    let temp = this.state.tasks[thisId];
 
     if (direction === "up" && prevId !== -1) {
       taskArray[thisId] = taskArray[prevId];
@@ -131,7 +163,7 @@ export class App extends Component {
       taskArray[nextId] = temp;
     }
 
-    this.setState({ addedTasks: taskArray });
+    this.setState({ tasks: taskArray });
   };
 
   render() {
@@ -232,13 +264,13 @@ export class App extends Component {
           {/* TASKS */}
           <div className="task-container">
             <h3>Rotations</h3>
-            <Task
+            {/* <Task
               taskId={0}
               taskInfo={this.state.firstTask}
               updateInfo={this.updateTask}
               taskLength={0}
               init={this.state.init}
-            />
+            /> */}
             {this.renderTasks()}
 
             <Popup
