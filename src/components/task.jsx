@@ -72,7 +72,7 @@ export class Task extends Component {
           <div className="task-input">
             <Input
               id="rotation"
-              disabled={!this.props.init && "disabled"}
+              disabled={!this.props.init}
               transparent
               placeholder="Rotation"
               onChange={this.handleInputChange}
@@ -82,7 +82,7 @@ export class Task extends Component {
           <div className="task-input">
             <Input
               id="duration"
-              disabled={!this.props.init && "disabled"}
+              disabled={!this.props.init}
               transparent
               placeholder="Event duration"
               onChange={this.handleInputChange}
@@ -103,7 +103,7 @@ export class Task extends Component {
               <Form>
                 <TextArea
                   placeholder="Goals and objectives"
-                  disabled={!this.props.init && "disabled"}
+                  disabled={!this.props.init}
                   rows="1"
                   id="goals"
                   onChange={this.handleInputChange}
@@ -121,7 +121,7 @@ export class Task extends Component {
                 <TextArea
                   id="tasks"
                   rows="1"
-                  disabled={!this.props.init && "disabled"}
+                  disabled={!this.props.init}
                   placeholder="Tasks"
                   onChange={this.handleInputChange}
                   value={this.props.taskInfo.tasks}
@@ -134,7 +134,7 @@ export class Task extends Component {
                 <TextArea
                   id="equipment"
                   placeholder="Equipment"
-                  disabled={!this.props.init && "disabled"}
+                  disabled={!this.props.init}
                   rows="1"
                   onChange={this.handleInputChange}
                   value={this.props.taskInfo.equipment}

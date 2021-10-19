@@ -35,7 +35,7 @@ export class App extends Component {
     this.setState({ init: 1 });
   };
 
-  // Updates the state of the added tasks
+  // Updates the state of the tasks
   updateInput = (id, r, e) => {
     this.setState((prevState) => ({
       tasks: prevState.tasks.map((el) =>
@@ -146,7 +146,7 @@ export class App extends Component {
     return (
       <div className="App">
         <div className="version">
-          <small>Version 1.0.0</small>
+          <small>Version 1.0.1</small>
         </div>
         <div
           className={
@@ -158,12 +158,7 @@ export class App extends Component {
           <div className="splash">
             <h1>Lesson Planr</h1>
             <br />
-            <Button
-              id="get-started-btn"
-              disabled={this.props.init && "disabled"}
-              inverted
-              onClick={this.initialize}
-            >
+            <Button id="get-started-btn" inverted onClick={this.initialize}>
               Start Your Plan
             </Button>
           </div>
@@ -184,7 +179,7 @@ export class App extends Component {
               <div className="detail-input">
                 <Input
                   id="instructor"
-                  disabled={!this.state.init && "disabled"}
+                  disabled={!this.state.init}
                   onChange={this.handleChange}
                   transparent
                   fluid
@@ -195,7 +190,7 @@ export class App extends Component {
               <div className="detail-input">
                 <Input
                   id="class"
-                  disabled={!this.state.init && "disabled"}
+                  disabled={!this.state.init}
                   onChange={this.handleChange}
                   transparent
                   fluid
@@ -219,7 +214,7 @@ export class App extends Component {
                     }))
                   }
                   id="date"
-                  disabled={!this.state.init && "disabled"}
+                  disabled={!this.state.init}
                   transparent
                   placeholder="Date"
                   value={this.state.details.date}
@@ -228,7 +223,7 @@ export class App extends Component {
               <div className="detail-input" style={{ width: "auto" }}>
                 <Input
                   id="duration"
-                  disabled={!this.state.init && "disabled"}
+                  disabled={!this.state.init}
                   onChange={this.handleChange}
                   transparent
                   placeholder="Class Length"
@@ -240,13 +235,6 @@ export class App extends Component {
           {/* TASKS */}
           <div className="task-container">
             <h3>Rotations</h3>
-            {/* <Task
-              taskId={0}
-              taskInfo={this.state.firstTask}
-              updateInfo={this.updateTask}
-              taskLength={0}
-              init={this.state.init}
-            /> */}
             {this.renderTasks()}
 
             <Popup
@@ -255,7 +243,7 @@ export class App extends Component {
               trigger={
                 <Button
                   icon
-                  disabled={!this.state.init && "disabled"}
+                  disabled={!this.state.init}
                   circular
                   onClick={this.createTask}
                   id="add-task-btn"
@@ -271,12 +259,12 @@ export class App extends Component {
               icon="print"
               color="green"
               content="Print"
-              disabled={!this.state.init && "disabled"}
+              disabled={!this.state.init}
             />
 
             <Button
               onClick={this.reset}
-              disabled={!this.state.init ? "disabled" : ""}
+              disabled={!this.state.init}
               icon="undo alternate"
               color="red"
               content="Reset"
