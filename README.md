@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Lesson Planr
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Lesson Planr is an easy to use online gymnastics lesson planning app. Add rotations, tasks, equpement needs, etc . And when yuou're done, just print!
 
 ## Available Scripts
 
