@@ -20,36 +20,12 @@ export class App extends Component {
         {
           id: 0,
           goals: "",
-          rotation: "Bars",
-          duration: "",
-          tasks: "",
-          equipment: "",
-        },
-        {
-          id: 1,
-          goals: "",
-          rotation: "Beam",
-          duration: "",
-          tasks: "",
-          equipment: "",
-        },
-        {
-          id: 2,
-          goals: "",
-          rotation: "Floor",
+          rotation: "",
           duration: "",
           tasks: "",
           equipment: "",
         },
       ],
-      firstTask: {
-        id: 0,
-        rotation: "",
-        duration: "",
-        tasks: "",
-        equipment: "",
-      },
-      addedTasks: [],
     };
   }
 
